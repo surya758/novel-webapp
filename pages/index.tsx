@@ -8,6 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
 	const [view, setView] = useState("novel");
+	const [novelId, setNovelId] = useState("");
 	const NovelComp = () => {
 		return (
 			<form
@@ -23,6 +24,7 @@ export default function Home() {
 					axios
 						.post("https://novel-app-server.vercel.app/api/v1/novels", data)
 						.then((res) => {
+							setNovelId(res.data._id);
 							console.log(res);
 						})
 						.catch((e) => {
@@ -140,6 +142,7 @@ export default function Home() {
 			<main className={styles.main}>
 				<button onClick={() => setView("novel")}>Create Novel</button>
 				<button onClick={() => setView("chapter")}>Create Chapter</button>
+				<h1>{novelId}</h1>
 				{view === "novel" ? <NovelComp /> : <ChapterComp />}
 			</main>
 		</>
