@@ -9,6 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
 	const [view, setView] = useState("novel");
 	const [novelId, setNovelId] = useState("");
+	const [genre, setGenre] = useState("harem");
 	const NovelComp = () => {
 		return (
 			<form
@@ -19,7 +20,8 @@ export default function Home() {
 					const author = (document.getElementById("author") as HTMLInputElement).value;
 					const imageUrl = (document.getElementById("image-url") as HTMLInputElement).value;
 					const description = (document.getElementById("description") as HTMLInputElement).value;
-					const data = { id, title, author, imageUrl, description };
+					const genrePick = genre;
+					const data = { id, title, author, imageUrl, description, genre: genrePick };
 
 					axios
 						.post("https://novel-app-server.vercel.app/api/v1/novels", data)
@@ -32,6 +34,13 @@ export default function Home() {
 						});
 				}}
 			>
+				<section className={styles.section}>
+					<h1>Genre</h1>
+					<select name='genre' id='genre' onChange={(e) => setGenre(e.target.value)}>
+						<option value='harem'>Harem</option>
+						<option value='green'>Green</option>
+					</select>
+				</section>
 				<section className={styles.section}>
 					<h1>Id</h1>
 					<input type='text' id='id' name='id' className={styles.input} />
