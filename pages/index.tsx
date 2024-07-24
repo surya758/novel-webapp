@@ -78,27 +78,37 @@ export default function Home() {
 					const content = (document.getElementById("content") as HTMLInputElement).value;
 
 					function stringToArrayWithNewline(largeString: string) {
+						// Normalize spaces
+						const normalizedString = largeString.replace(/\u3000/g, " ");
+
 						// Split the string into paragraphs
-						const paragraphs = largeString.split(/\n(?=\S)/);
+						const paragraphs = normalizedString.split(/\n\s*\n/);
 
 						// Process each paragraph
-						return paragraphs.flatMap((paragraph) => {
+						return paragraphs.flatMap((paragraph, index) => {
+							// Trim each paragraph to remove leading/trailing whitespace
+							paragraph = paragraph.trim();
+
+							if (paragraph === "") {
+								return ["\n"];
+							}
+
 							// Split dialogue and narrative
 							const parts = paragraph.split(/(".*?")/).filter(Boolean);
 
-							return parts
-								.map((part) => {
-									if (part.startsWith('"') && part.endsWith('"')) {
-										// Dialogue: keep as is and add newline
-										return part.trim() + "\n";
-									} else {
-										// Narrative: split into sentences
-										return part
-											.split(/(?<=[.!?]) (?=[A-Z])/)
-											.map((sentence) => sentence.trim() + "\n");
-									}
-								})
-								.flat();
+							return parts.flatMap((part) => {
+								if (part.startsWith('"') && part.endsWith('"')) {
+									return [part.trim() + "\n"];
+								} else {
+									// Narrative: split into sentences, accounting for multiple space types
+									const sentences = part
+										.split(/(?<=[.!?])\s+(?=[A-Z])/)
+										.map((sentence) => sentence.trim())
+										.filter((sentence) => sentence !== "")
+										.map((sentence) => sentence + "\n");
+									return sentences;
+								}
+							});
 						});
 					}
 
