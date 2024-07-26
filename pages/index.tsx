@@ -73,8 +73,11 @@ export default function Home() {
 					const content = (document.getElementById("content") as HTMLInputElement).value;
 
 					function stringToArrayWithNewline(largeString: string) {
+						// Remove all occrances of cool18.com
+						const removed18String = largeString.replace(/cool18\.com/g, '')
+
 						// Normalize spaces
-						const normalizedString = largeString.replace(/\u3000/g, " ");
+						const normalizedString = removed18String.replace(/\u3000/g, " ");
 
 						// Split the string into paragraphs
 						const paragraphs = normalizedString.split(/\n\s*\n/);
