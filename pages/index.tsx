@@ -15,13 +15,12 @@ export default function Home() {
 			<form
 				onSubmit={(e) => {
 					e.preventDefault();
-					const id = (document.getElementById("id") as HTMLInputElement).value;
 					const title = (document.getElementById("title") as HTMLInputElement).value;
 					const author = (document.getElementById("author") as HTMLInputElement).value;
 					const imageUrl = (document.getElementById("image-url") as HTMLInputElement).value;
 					const description = (document.getElementById("description") as HTMLInputElement).value;
 					const genrePick = genre;
-					const data = { id, title, author, imageUrl, description, genre: genrePick };
+					const data = { title, author, imageUrl, description, genre: genrePick };
 
 					axios
 						.post("https://novel-app-server.vercel.app/api/v1/novels", data)
@@ -40,10 +39,6 @@ export default function Home() {
 						<option value='harem'>Harem</option>
 						<option value='green'>Green</option>
 					</select>
-				</section>
-				<section className={styles.section}>
-					<h1>Id</h1>
-					<input type='text' id='id' name='id' className={styles.input} />
 				</section>
 				<section className={styles.section}>
 					<h1>Title</h1>
